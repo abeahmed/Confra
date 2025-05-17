@@ -14,11 +14,11 @@ const {
   validateRequest 
 } = require('../middleware/validation');
 
-// Public routes
+// Public 
 router.post('/register', registerValidation, validateRequest, register);
 router.post('/login', loginValidation, validateRequest, login);
 
-// Protected routes
+// Protected 
 router.get('/me', protect, getMe);
 router.post('/logout', protect, logout);
 router.get('/bookings', protect, getUserBookings);

@@ -15,14 +15,14 @@ const { getEventBookings } = require('../controllers/bookingController');
 const { protect, authorize } = require('../middleware/auth');
 const { eventValidation, validateRequest } = require('../middleware/validation');
 
-// Public endpoints
+// Public
 router.get('/', getEvents);
 router.get('/search', searchEvents);
 router.get('/upcoming', getUpcomingEvents);
 router.get('/category/:category', getEventsByCategory);
 router.get('/:id', getEvent);
 
-// Protected endpoints
+// Protected
 router.post('/', protect, authorize('organizer', 'admin'), eventValidation, validateRequest, createEvent);
 router.put('/:id', protect, authorize('organizer', 'admin'), eventValidation, validateRequest, updateEvent);
 router.delete('/:id', protect, authorize('organizer', 'admin'), deleteEvent);
