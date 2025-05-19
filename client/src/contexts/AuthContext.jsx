@@ -1,18 +1,34 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import api from '../api/axios';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [token, setToken] = useState(null);
-    const [user, setUser] = useState(null);
-    const [isLoading, setLoading] = useState(false);
+    const [token, setToken] = useState(() => {
+        const savedToken = sessionStorage.getItem('auth_token');
+        return savedToken || null;
+    });
+    const [user, setUser] = useState(() => {
+        const savedUser = sessionStorage.getItem('auth_user');
+        return savedUser ? JSON.parse(savedUser) : null;
+    });
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    useEffect(() => {
+        if (token) {
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        } else {
+            delete api.defaults.headers.common['Authorization'];
+        }
+    }, [token]);
+    
 
     const login = async (email, password) => {
         setLoading(true);
         setError(null);
         try {
-            const respone = await api.post('users/login', { email, password });
+            const response = await api.post('users/login', { email, password });
 
             const data = response.data;
 
@@ -24,6 +40,9 @@ export const AuthProvider = ({ children }) => {
 
             setToken(data.token);
             setUser(data.user);
+
+            sessionStorage.setItem('auth_token', data.token);
+            sessionStorage.setItem('auth_user', JSON.stringify(data.user));
             return true;
 
         } catch (err) {
@@ -63,6 +82,9 @@ export const AuthProvider = ({ children }) => {
         delete api.defaults.headers.common['Authorization'];
         setToken(null);
         setUser(null);
+
+        sessionStorage.removeItem('auth_token');
+        sessionStorage.removeItem('auth_user'); 
     };
 
     return (

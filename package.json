@@ -1,0 +1,26 @@
+{
+  "name": "event-booking-app",
+  "version": "1.0.0",
+  "description": "REST API for event booking and management built with Node.js, Express, and MongoDB.",
+  "main": "index.js",
+  "scripts": {
+    "client": "cd client && npm run dev",
+    "server": "cd server && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abeahmed/Confr.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abeahmed/Confr/issues"
+  },
+  "homepage": "https://github.com/abeahmed/Confr#readme",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
