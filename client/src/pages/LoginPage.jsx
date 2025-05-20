@@ -5,6 +5,7 @@ import InputField from '../components/InputField';
 import Button from '../components/Button';
 import AuthCard from '../components/AuthCard';
 import Text from '../components/Text';
+import Alert from '../components/Alert';
 
 function LoginPage() {
     const { login, error, loading } = useAuth();
@@ -26,6 +27,10 @@ function LoginPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!formData.email || !formData.password) {
+            return;
+        }
+
         const success = await login(formData.email, formData.password);
 
         if (success) {
@@ -35,15 +40,17 @@ function LoginPage() {
     };
 
     return ( 
+        
         <AuthCard title="Login to your account" onSubmit={handleSubmit}>
             <InputField name="email" id="email" type="email" value={formData.email} onChange={handleChange} required/>
             <InputField name="password" id="password" type="password" value={formData.password} onChange={handleChange} required/>
             <Button type="submit" disabled={loading}>{loading ? 'Logging in...' : 'Login'}</Button>
             
-            {error && <Text variant = "error" className="error">{error}</Text>}
+            {error && <Alert type="error">{error}</Alert>}
             
-            <Text variant = "body">Don't have an account? <Link to="/register">Register</Link></Text>
+            <Text variant = "bodySmall">Don't have an account? <Link to="/register">Register</Link></Text>
         </AuthCard>
+       
     );
  
     

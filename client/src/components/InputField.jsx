@@ -1,4 +1,5 @@
 import React from 'react';
+import Text from './Text';
 
 function InputField({
     id,
@@ -8,13 +9,16 @@ function InputField({
     value,
     onChange,
     children,
+    required,
 }) {
-    const styling = "w-80 p-2 rounded-md border-5 border-zinc-800 focus:outline-none focus:border-5 focus:border-rose-900 mb-10"
+    const styling = `w-full p-2 rounded-md border-5 border-zinc-800 focus:outline-none 
+    focus:border-5 focus:border-rose-900 mb-10`
+
     return (
 
         
-        <div>
-            <h2 className="text-2xl mb-6 text-gray-300 text-left">{name}</h2>
+        <div className = "w-full">
+            <Text variant="bodyLarge" className="text-left">{name}</Text>
             {type === 'select' ? (
             
             <select 
@@ -22,9 +26,20 @@ function InputField({
                 id={id}
                 value={value}
                 onChange={onChange}
+                required={required} 
             >
                 {children}
             </select>
+            ) : type === 'textarea' ? (
+                <textarea 
+                    className={styling}
+                    id={id}
+                    placeholder={placeholder}
+                    value={value}
+                    onChange={onChange}
+                    rows={4}
+                    required={required} 
+                />
             ) : (
             
             <input className={styling} 
@@ -32,7 +47,9 @@ function InputField({
                 id={id} 
                 placeholder={placeholder} 
                 value={value} 
-                onChange={onChange} />
+                onChange={onChange}
+                required={required} 
+            />
             )}
         </div>
     )

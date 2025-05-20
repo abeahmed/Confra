@@ -1,15 +1,15 @@
-const Text = ({children, variant = 'body', as = 'p'}) => {
+const Text = ({children, variant = 'body', as = 'p', className=''}) => {
     const variants = {
 
-        h1: "text-5xl font-bold text-gray-200 mb-4",
-        h2: "text-2xl font-bold text-gray-200 mb-4",
-        h3: "text-xl font-bold text-gray-200 mb-4",
+        h1: "text-3xl md:text-4xl font-semibold text-gray-100 mb-6 tracking-tight leading-tight",
+        h2: "text-2xl md:text-3xl font-semibold text-gray-100 mb-6 tracking-tight leading-tight",
+        h3: "text-xl md:text-2xl font-semibold text-gray-200 mb-4 tracking-tight leading-tight",
+        h4: "text-lg md:text-xl font-semibold text-gray-200 mb-4",
    
-        body: "text-gray-400 mb-6",
-        bodyLarge: "text-lg text-gray-400 mb-6",
-        bodySmall: "text-sm text-gray-400 mb-6",
+        body: "text-base md:text-lg text-gray-300 leading-relaxed mb-6",
+        bodyLarge: "text-lg md:text-xl text-gray-300 leading-relaxed mb-6",
+        bodySmall: "text-sm md:text-base text-gray-400 leading-relaxed mb-4",
 
-        error: "text-red-200 bg-red-900/50 border border-red-800 rounded-lg p-4 mb-6 text-center",
         centered: "text-center text-gray-400 mb-4"
         
     }
@@ -17,7 +17,7 @@ const Text = ({children, variant = 'body', as = 'p'}) => {
     const Component = as;
 
     return (
-        <Component className={variants[variant]}>
+        <Component className={`${variants[variant]} ${className}`}>
             {children}
         </Component>
     );

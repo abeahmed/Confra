@@ -33,7 +33,7 @@ const HowItWorks = () => {
               </div>
               <div className="px-6">
                 <Text variant = "h3">{step.title}</Text>
-                <Text variant = "body">{step.description}</Text>
+                <Text variant = "body" className="text-gray-400">{step.description}</Text>
               </div>
             </div>
           ))}

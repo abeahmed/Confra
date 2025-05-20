@@ -6,6 +6,7 @@ import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './contexts/AuthContext'
+import EventPage from './pages/EventPage'
 
 function App() {
   return (
@@ -18,8 +19,7 @@ function App() {
             <Route path="/create-event" element={<ProtectedRoute><CreateEventPage /></ProtectedRoute>} /> 
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
-      
-            {/* <Route path="/event/:id" element={<EventPage />} /> */}
+            <Route path="/event/:id" element={<EventPage />} />
           </Routes>
         </div>
       </Router>

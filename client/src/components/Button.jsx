@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-const Button = ({to, onClick, children, variant='default'}) => {
+const Button = ({to, onClick, children, variant='default', className=''}) => {
 
-    const baseStyling = "inline-block bg-rose-700 rounded-full text-lg font-medium transition flex items-center justify-center"
+    const baseStyling = "inline-block bg-rose-700 hover:bg-rose-500 rounded-full text-lg font-medium transition flex items-center justify-center"
     
     const variants = {
-        default: "bg-rose-700 px-10 py-3 hover:bg-rose-500 hover:-translate-y-0.5 shadow-md",
-        nav: "bg-rose-700 px-4 py-2 hover:bg-rose-500"
+        default: "px-10 py-3 hover:-translate-y-0.5 shadow-md mb-6",
+        nav: "px-4 py-2"
     }
 
-     const styling = `${baseStyling} ${variants[variant]}`
+     const styling = `${baseStyling} ${variants[variant]} ${className}`
      
     if(to) {
         return (

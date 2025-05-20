@@ -1,11 +1,14 @@
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Button from './Button';
 import NavLink from './NavLink';
 const Navigation = () => {
     const { isAuthenticated, user, logout } = useAuth();
-
-    console.log('Auth state in Navigation:', { isAuthenticated, user }); 
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
 
     return (
         <nav>
@@ -16,7 +19,7 @@ const Navigation = () => {
                         <>
                             <NavLink to="/dashboard">Dashboard</NavLink>
                             <NavLink to="/create-event">Create Event</NavLink>
-                            <Button onClick={logout} variant="nav" to="/">Logout</Button>
+                            <Button onClick={handleLogout} variant="nav">Logout</Button>
                         </>
                     ) : (
                         <>
