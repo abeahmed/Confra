@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import Text from '../components/Text';
 import PageContainer from '../components/PageContainer';
 import Button from '../components/Button';
+import { LuCopy, LuEye } from "react-icons/lu";
 import { Link } from 'react-router-dom';
 import ContentCard from '../components/ContentCard';
 import StatusMessage from '../components/StatusMessage';
@@ -112,8 +113,8 @@ function DashboardPage() {
                                             {event.description}
                                         </Text>
                                         <div className="mt-4 flex gap-4 justify-center">
-                                            <Button variant="nav" to={eventUrl}>View Event</Button>
-                                            <Button variant ="nav" onClick={() => navigator.clipboard.writeText(eventUrl)}>Copy link</Button>
+                                            <Button variant="nav" to={eventUrl}><LuEye /></Button>
+                                            <Button variant="nav" onClick={() => navigator.clipboard.writeText(eventUrl)}><LuCopy /></Button>
                                         </div>
                                     </ContentCard>
                                 );

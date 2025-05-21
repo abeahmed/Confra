@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getEvent } from '../api/eventservice';
 import { useAuth } from '../contexts/AuthContext';
+import { LuCopy, LuTrash2, LuSquarePen } from "react-icons/lu";
 import Text from '../components/Text';
 import Button from '../components/Button';
 import PageContainer from '../components/PageContainer';
 import StatusMessage from '../components/StatusMessage';
+import Loading from '../components/Loading';
 
 function EventPage() {
     const { id } = useParams();
@@ -13,6 +15,7 @@ function EventPage() {
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isOrganizer, setIsOrganizer] = useState(false);
 
     const navigate = useNavigate();
 
@@ -20,11 +23,10 @@ function EventPage() {
         const fetchEvent = async () => {
             try {
                 const response = await getEvent(id);
-                console.log('Full response:', response);
-                console.log('Response data:', response.data);
-                console.log('Response data.data:', response.data.data); 
                
-                setEvent(response.data.data);    
+                setEvent(response.data.data);   
+                
+                setIsOrganizer(user && response.data.data.organizer._id === user.id);
                
             } catch (err) {
                 setError(err.response?.data?.error || 'An error occurred while fetching the event');
@@ -33,15 +35,34 @@ function EventPage() {
             }
         };
         fetchEvent();
-    }, [id]);
+    }, [id, user]);
 
-    console.log('Event object:', event);
+    const renderActions = () => {
+        if (isOrganizer) {
+            return (
+                <div className="flex flex-col items-cetnter gap-4">
+               
+                    <div className="flex justify-center items-center gap-4">
+                        <Button><LuSquarePen /></Button>
+                        <Button><LuTrash2 /></Button>
+                    </div>
+
+                </div>
+            )
+        } else {
+            return (
+            <div className="flex justify-center items-center">
+            <Button>RSVP Now</Button>
+            </div>
+            )
+        }
+    }
     
     if (loading) {
         return (
-            <div className="flex justify-center items-center min-h-screen">
-                <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-            </div>
+            <PageContainer>
+                <Loading message="Loading Event" />
+            </PageContainer>
         )
     }
 
@@ -79,15 +100,14 @@ function EventPage() {
                     <Text variant="h3">Address:</Text>
                     <Text variant="body">{event.address}</Text>
                 </div>
-            </div>
+            </div> 
+            
         <div className="bg-zinc-950 rounded-lg p-6 mb-8">
             <Text variant="h3">Description</Text>
             <Text variant="body">{event.description}</Text>
+            <code>Link: {window.location.href}</code>
         </div>
-        <div className="flex justify-center items-center">
-            <Button>RSVP Now</Button>
-        </div>
-       
+        {renderActions()}
     </PageContainer>
     );
 }
