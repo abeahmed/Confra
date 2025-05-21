@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import InputField from '../components/InputField';
@@ -8,7 +8,7 @@ import Alert from '../components/Alert';
 import Text from '../components/Text';
 
 function RegisterPage() {
-    const { register, error, loading } = useAuth();
+    const { register, error, loading, isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -19,6 +19,12 @@ function RegisterPage() {
         phone: '',
         role: 'organizer'
     });
+
+    useEffect(() => {
+        if (isAuthenticated == true) {
+            navigate('/dashboard', { replace: true });
+        }
+    }, [isAuthenticated, navigate]);
 
     const handleChange = (e) => {
         const { id, value } = e.target;

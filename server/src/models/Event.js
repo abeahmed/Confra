@@ -67,7 +67,8 @@ const EventSchema = new mongoose.Schema({
   organizer: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
+    index: true
   }
 }, {
   toJSON: { virtuals: true },

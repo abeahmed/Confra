@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import InputField from '../components/InputField';
@@ -8,7 +8,7 @@ import Text from '../components/Text';
 import Alert from '../components/Alert';
 
 function LoginPage() {
-    const { login, error, loading } = useAuth();
+    const { login, error, loading, isAuthenticated } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -18,6 +18,12 @@ function LoginPage() {
         email: '',
         password: '',
     });
+
+    useEffect(() => {
+        if (isAuthenticated == true) {
+            navigate('/dashboard', { replace: true });
+        }
+    }, [isAuthenticated, navigate]);
 
     const handleChange = (e) => {
         const { id, value } = e.target;

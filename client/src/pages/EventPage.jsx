@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getEvent } from '../api/eventservice';
+import { useAuth } from '../contexts/AuthContext';
 import Text from '../components/Text';
 import Button from '../components/Button';
 import PageContainer from '../components/PageContainer';
@@ -8,6 +9,7 @@ import StatusMessage from '../components/StatusMessage';
 
 function EventPage() {
     const { id } = useParams();
+    const { user } = useAuth();
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

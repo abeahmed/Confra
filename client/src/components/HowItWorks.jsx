@@ -27,7 +27,7 @@ const HowItWorks = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {steps.map((step, index) => (
             <div key={step.number} className="flex flex-col items-center text-center rounded-lg
-             py-8 bg-zinc-950 transition-all duration-300 hover:scale-105 hover:shadow-xl">
+             py-8 bg-zinc-950/30 border border-zinc-800 transition-all duration-300 hover:scale-105 hover:shadow-xl">
               <div className="w-10 h-10 bg-rose-900 text-white rounded-full flex items-center justify-center font-bold m-4  shrink-0">
                 {step.number}
               </div>
