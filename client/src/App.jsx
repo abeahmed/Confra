@@ -8,6 +8,7 @@ import DashboardPage from './pages/DashboardPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './contexts/AuthContext'
 import EventPage from './pages/EventPage'
+import EditEventPage from './pages/EditEventPage'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/event/:id" element={<EventPage />} />
+            <Route path="/event/:id/edit" element={<ProtectedRoute><EditEventPage /></ProtectedRoute>} />
           </Routes>
         </div>
       </Router>

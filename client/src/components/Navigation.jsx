@@ -53,9 +53,9 @@ const Navigation = () => {
             </div>
                 {showMobileMenu && (
                     <>
-                    <div className={`md:hidden absolute top-16 left-0 right-0 bg-zinc-950 border-b border-zinc-800 px-12 py-8 duration-1000 ease-in-out transform ${
+                    <div className={`md:hidden absolute top-16 left-0 right-0 bg-zinc-950 border-b border-zinc-800 px-12 py-8  ${
                     showMobileMenu ? 'opacity-100 max-h-screen' : 'opacity-0 max-h-0 overflow-hidden'}`}>
-                        <div className="flex flex-col gap-6 text-center mt-6 mb-6 max-w-sm mx-auto">
+                        <div className="flex flex-col gap-6 text-center mt-6 mb-10 w-full max-w-sm mx-auto">
                             {isAuthenticated ? (
                                 <AuthenticatedLinks />
                             ) : (

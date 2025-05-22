@@ -4,7 +4,7 @@ import Text from '../components/Text';
 import PageContainer from '../components/PageContainer';
 import Button from '../components/Button';
 import { LuCopy, LuSquarePen, LuPlus } from "react-icons/lu";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import ContentCard from '../components/ContentCard';
 import StatusMessage from '../components/StatusMessage';
 import { getUserEvents } from '../api/userservice';
@@ -16,6 +16,8 @@ function DashboardPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+
+    const state = useLocation();
 
     useEffect(() => {
         console.log('Auth State:', { 
@@ -114,10 +116,13 @@ function DashboardPage() {
                                         <Text variant="body" className="text-gray-400">
                                             {event.description}
                                         </Text>
-                                        <div className="mt-4 flex gap-4 justify-center">
-                                            
-                                            <Button variant="icon" icon={LuSquarePen} onClick={() => navigator.clipboard.writeText(eventUrl)} />
-                                            <Button variant="icon" icon={LuCopy} onClick={() => navigator.clipboard.writeText(eventUrl)} />
+                                        <div className="mt-4 flex gap-4 justify-center">    
+                                            <Button variant="icon" icon={LuSquarePen}  onClick={(e) => {
+                                                e.stopPropagation();
+                                                navigate(`/event/${event.id}/edit`, { state: { event } });}} />
+                                            <Button variant="icon" icon={LuCopy} onClick={(e) => {
+                                            e.stopPropagation(); 
+                                            navigator.clipboard.writeText(eventUrl)}}/>
                                         </div>
                                     </ContentCard>
                                 );

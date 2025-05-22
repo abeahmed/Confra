@@ -39,7 +39,7 @@ function EventForm({
     return (
     <div>
         <div className="mb-8">
-            <Text variant="h1">Create New Event</Text>
+            <Text variant="h1">{title}</Text>
         </div>
         <form className="w-full flex flex-col items-center" onSubmit={handleSubmit}>
             <InputField name="Title:" id="title" type="text" value={eventData.title} onChange={handleChange}/>

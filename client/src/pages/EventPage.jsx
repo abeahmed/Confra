@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getEvent } from '../api/eventservice';
+import { getEvent, deleteEvent} from '../api/eventservice';
 import { useAuth } from '../contexts/AuthContext';
 import { LuCopy, LuTrash2, LuSquarePen } from "react-icons/lu";
 import Text from '../components/Text';
@@ -10,6 +10,7 @@ import StatusMessage from '../components/StatusMessage';
 import Loading from '../components/Loading';
 import RSVPForm from '../components/RSVPForm';
 import ContentCard from '../components/ContentCard';
+
 function EventPage() {
     const { id } = useParams();
     const { user } = useAuth();
@@ -25,11 +26,11 @@ function EventPage() {
         const fetchEvent = async () => {
             try {
                 const response = await getEvent(id);
-               
-                setEvent(response.data.data);   
+            
+                setEvent(response.data.data);
                 
                 setIsOrganizer(user && response.data.data.organizer._id === user.id);
-               
+            
             } catch (err) {
                 setError(err.response?.data?.error || 'An error occurred while fetching the event');
             } finally {
@@ -59,6 +60,16 @@ function EventPage() {
         // You can also show a success message or refresh event data if needed
     };
 
+    const handleDelete = async () => {
+        try {
+            await deleteEvent(id);
+            navigate('/dashboard');
+        } catch (error) {
+            setError(error.message || 'An error occurred while deleting the event');
+        }
+    }
+    
+
     const renderActions = () => {
         if (isOrganizer) {
             return (
@@ -66,8 +77,9 @@ function EventPage() {
                      <StatusMessage alertType="info" alertMessage={window.location.href} className="w-full"></StatusMessage>
                
                     <div className="flex text-center justify-center items-center gap-4 flex-wrap">
-                        <Button variant="secondary" icon={LuSquarePen}>Edit</Button>
-                        <Button variant="secondary" icon={LuTrash2}>Delete</Button>    
+                        <Button variant="secondary" icon={LuSquarePen} 
+                        onClick={() => navigate(`/event/${event.id}/edit`, { state: { event } })} >Edit</Button>
+                        <Button variant="secondary" icon={LuTrash2} onClick={handleDelete}>Delete</Button>    
                     </div>
 
                 </div>

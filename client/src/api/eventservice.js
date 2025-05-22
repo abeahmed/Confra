@@ -14,4 +14,4 @@ export const updateEvent = async (eventId, eventData) => {
 
 export const deleteEvent = async (eventId) => {
     return api.delete(`/events/${eventId}`);
-  };
+};
