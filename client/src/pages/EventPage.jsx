@@ -8,7 +8,8 @@ import Button from '../components/Button';
 import PageContainer from '../components/PageContainer';
 import StatusMessage from '../components/StatusMessage';
 import Loading from '../components/Loading';
-
+import RSVPForm from '../components/RSVPForm';
+import ContentCard from '../components/ContentCard';
 function EventPage() {
     const { id } = useParams();
     const { user } = useAuth();
@@ -16,6 +17,7 @@ function EventPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isOrganizer, setIsOrganizer] = useState(false);
+    const [showRSVP, setShowRSVP] = useState(false);
 
     const navigate = useNavigate();
 
@@ -37,34 +39,65 @@ function EventPage() {
         fetchEvent();
     }, [id, user]);
 
+    const handleRSVP = async () => {
+        setLoading(true);
+        setError(null);
+        setSuccess(null);
+
+        try {
+            const response = await bookEvent(id, email);
+            setSuccess('Booking successful!');
+        } catch (error) {
+            setError(error.message || 'An error occurred while signing up');
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const handleBookingSuccess = (response) => {
+        setShowRSVP(false); // Hide the form after successful booking
+        // You can also show a success message or refresh event data if needed
+    };
+
     const renderActions = () => {
         if (isOrganizer) {
             return (
-                <div className="flex flex-col items-cetnter gap-4">
+                <div className="flex flex-col">
+                     <StatusMessage alertType="info" alertMessage={window.location.href} className="w-full"></StatusMessage>
                
-                    <div className="flex justify-center items-center gap-4">
-                        <Button><LuSquarePen /></Button>
-                        <Button><LuTrash2 /></Button>
+                    <div className="flex text-center justify-center items-center gap-4 flex-wrap">
+                        <Button variant="secondary" icon={LuSquarePen}>Edit</Button>
+                        <Button variant="secondary" icon={LuTrash2}>Delete</Button>    
                     </div>
 
                 </div>
             )
         } else {
             return (
-            <div className="flex justify-center items-center">
-            <Button>RSVP Now</Button>
-            </div>
+                <div className="flex justify-center items-center">
+                        {showRSVP && (
+                        <ContentCard maxWidth="max-w-md">
+                            <RSVPForm eventId={id} bookingSuccess={handleBookingSuccess} />
+                        </ContentCard>
+                        )}
+                
+                    {!showRSVP && (
+                    <Button onClick={() => setShowRSVP(true)}>
+                        Sign Up for Event
+                    </Button>
+                    )}
+              </div>
             )
         }
     }
     
-    if (loading) {
+    /*if (loading) {
         return (
             <PageContainer>
-                <Loading message="Loading Event" />
+                <Loading message="Loading" />
             </PageContainer>
         )
-    }
+    }*/
 
 
     if (!event || error) {
@@ -100,12 +133,12 @@ function EventPage() {
                     <Text variant="h3">Address:</Text>
                     <Text variant="body">{event.address}</Text>
                 </div>
+                
             </div> 
             
         <div className="bg-zinc-950 rounded-lg p-6 mb-8">
             <Text variant="h3">Description</Text>
             <Text variant="body">{event.description}</Text>
-            <code>Link: {window.location.href}</code>
         </div>
         {renderActions()}
     </PageContainer>

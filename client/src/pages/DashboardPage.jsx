@@ -3,8 +3,8 @@ import { useAuth } from '../contexts/AuthContext';
 import Text from '../components/Text';
 import PageContainer from '../components/PageContainer';
 import Button from '../components/Button';
-import { LuCopy, LuEye } from "react-icons/lu";
-import { Link } from 'react-router-dom';
+import { LuCopy, LuSquarePen, LuPlus } from "react-icons/lu";
+import { Link, useNavigate } from 'react-router-dom';
 import ContentCard from '../components/ContentCard';
 import StatusMessage from '../components/StatusMessage';
 import { getUserEvents } from '../api/userservice';
@@ -15,7 +15,7 @@ function DashboardPage() {
     const [userEvents, setUserEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-  
+    const navigate = useNavigate();
 
     useEffect(() => {
         console.log('Auth State:', { 
@@ -81,7 +81,7 @@ function DashboardPage() {
                 <div className="mb-8">
                     <div className="flex justify-between items-center mb-8">
                         <Text variant="h2">Your Events:</Text>
-                        <Button to="/create-event">Create New</Button>
+                        <Button to="/create-event"><LuPlus className="mr-2" />Create Event</Button>
                     </div>
                     
                     {userEvents.length === 0 ? (
@@ -94,7 +94,9 @@ function DashboardPage() {
                             {userEvents.map(event => {
                                 const eventUrl = `${window.location.origin}/event/${event.id}`;
                                 return (
-                                    <ContentCard key={event.id}>
+                                    <ContentCard key={event.id}
+                                    onClick={() => navigate(`/event/${event._id}`)}>
+
                                         <Text variant="h3">{event.title}</Text>
                                         <Text variant="body" className="text-gray-400">
                                         {new Date(event.startTime).toLocaleDateString("en-US", {
@@ -113,8 +115,9 @@ function DashboardPage() {
                                             {event.description}
                                         </Text>
                                         <div className="mt-4 flex gap-4 justify-center">
-                                            <Button variant="nav" to={eventUrl}><LuEye /></Button>
-                                            <Button variant="nav" onClick={() => navigator.clipboard.writeText(eventUrl)}><LuCopy /></Button>
+                                            
+                                            <Button variant="icon" icon={LuSquarePen} onClick={() => navigator.clipboard.writeText(eventUrl)} />
+                                            <Button variant="icon" icon={LuCopy} onClick={() => navigator.clipboard.writeText(eventUrl)} />
                                         </div>
                                     </ContentCard>
                                 );

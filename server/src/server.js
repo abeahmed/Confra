@@ -32,10 +32,12 @@ mongoose.connect(process.env.MONGO_URI)
 const userRoutes = require('./routes/userRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const rsvpRoutes = require('./routes/rsvpRoutes'); 
 
 app.use('/api/users', userRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/rsvp', rsvpRoutes);
 
 app.get('/', (req, res) => {
   res.json({ 
