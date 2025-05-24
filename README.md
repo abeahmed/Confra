@@ -1,4 +1,4 @@
-# Event Booking App
+# Confra.app
 
 A full-stack event booking and management application built with React, Node.js, Express, and MongoDB.
 
