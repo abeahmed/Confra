@@ -27,4 +27,40 @@ const sendVerificationCode = async (email, name, code) => {
     await transporter.sendMail(mailOptions);
 }
 
-module.exports = { sendVerificationCode };
+const sendConfirmation = async ({email, event, qrCodeDataUrl}) => {
+    const mailOptions = {
+        from: process.env.EMAIL_FROM,
+        to: email, 
+        subject: `Confra Event Confirmation: ${event.title}`,
+        html: `
+            <h1>Registration Confirmed</h1>
+            <p>You're all set to attend ${event.title}!</p>
+            <h2>Event Details:</h2>
+            <ul>
+                <li>Date: ${new Date(event.startTime).toLocaleDateString()}</li>
+                <li>Time: ${new Date(event.startTime).toLocaleTimeString()}</li>
+                <li>Venue: ${event.venue}</li>
+                <li>Address: ${event.address}</li>
+            </ul>
+            <h2>Your QR Code Ticket:</h2>
+            <img src="${qrCodeDataUrl}" alt="Event QR Code" />
+            <p>Please show this QR code at the event.</p>
+            <p>We look forward to seeing you there!</p>
+        `
+    };
+
+    await transporter.sendMail(mailOptions);
+}
+
+const sendEmail = async ({ to, subject, html }) => {
+    const mailOptions = {
+        from: process.env.EMAIL_FROM,
+        to,
+        subject,
+        html
+    };
+
+    await transporter.sendMail(mailOptions);
+}
+
+module.exports = { sendVerificationCode, sendConfirmation };

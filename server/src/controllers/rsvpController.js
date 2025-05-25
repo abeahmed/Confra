@@ -1,6 +1,7 @@
 const RSVP = require('../models/RSVP');
 const Event = require('../models/Event');
-const { sendVerificationCode } = require('../utils/emailService');
+const { sendVerificationCode, sendConfirmation } = require('../utils/emailService');
+const QRCode = require('qrcode');
 
 const generateVerificationCode = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
@@ -87,13 +88,28 @@ exports.createRSVP = async (req, res) => {
             });
         }
 
-           // Create RSVP only after verification
         const rsvp = await RSVP.create({
             event: verification.eventId,
             name: verification.name,
             email: verification.email,
             isVerified: true
         });
+
+        const event = await Event.findById(verification.eventId);
+
+        // Generate QR code data
+        const qrData = {
+            eventId: event._id,
+            rsvpId: rsvp._id,
+            eventName: event.title,
+            date: event.startTime
+        };
+
+        // Generate QR code as data URL
+        const qrCodeDataUrl = await QRCode.toDataURL(JSON.stringify(qrData));
+
+        await sendConfirmation({email: verification.email, event, qrCodeDataUrl});
+
 
         delete req.session.verification;
 
