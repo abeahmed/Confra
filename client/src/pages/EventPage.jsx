@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getEvent, deleteEvent} from '../api/eventservice';
 import { useAuth } from '../contexts/AuthContext';
-import { LuCopy, LuTrash2, LuSquarePen } from "react-icons/lu";
+import { LuTrash2, LuSquarePen } from "react-icons/lu";
 import Text from '../components/Text';
 import Button from '../components/Button';
 import PageContainer from '../components/PageContainer';
@@ -10,6 +10,7 @@ import StatusMessage from '../components/StatusMessage';
 import Loading from '../components/Loading';
 import RSVPForm from '../components/RSVPForm';
 import ContentCard from '../components/ContentCard';
+import Alert from '../components/Alert';
 
 function EventPage() {
     const { id } = useParams();
@@ -19,6 +20,7 @@ function EventPage() {
     const [error, setError] = useState(null);
     const [isOrganizer, setIsOrganizer] = useState(false);
     const [showRSVP, setShowRSVP] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
 
     const navigate = useNavigate();
 
@@ -40,24 +42,8 @@ function EventPage() {
         fetchEvent();
     }, [id, user]);
 
-    const handleRSVP = async () => {
-        setLoading(true);
-        setError(null);
-        setSuccess(null);
-
-        try {
-            const response = await bookEvent(id, email);
-            setSuccess('Booking successful!');
-        } catch (error) {
-            setError(error.message || 'An error occurred while signing up');
-        } finally {
-            setLoading(false);
-        }
-    }
-
     const handleBookingSuccess = (response) => {
-        setShowRSVP(false); // Hide the form after successful booking
-        // You can also show a success message or refresh event data if needed
+        setShowSuccess(true);
     };
 
     const handleDelete = async () => {
@@ -87,29 +73,29 @@ function EventPage() {
         } else {
             return (
                 <div className="flex justify-center items-center">
-                        {showRSVP && (
-                        <ContentCard maxWidth="max-w-md">
+                    {showSuccess ? (
+                        <StatusMessage alertType="success" alertMessage="Sign up complete! Check your inbox for event details" />
+                    ) : showRSVP ? (
+                        <ContentCard maxWidth="max-w-lg">
                             <RSVPForm eventId={id} bookingSuccess={handleBookingSuccess} />
                         </ContentCard>
-                        )}
-                
-                    {!showRSVP && (
-                    <Button onClick={() => setShowRSVP(true)}>
-                        Sign Up for Event
-                    </Button>
+                    ) : (
+                        <Button onClick={() => setShowRSVP(true)}>
+                            Sign Up for Event
+                        </Button>
                     )}
               </div>
             )
         }
     }
     
-    /*if (loading) {
+    if (loading) {
         return (
             <PageContainer>
                 <Loading message="Loading" />
             </PageContainer>
         )
-    }*/
+    }
 
 
     if (!event || error) {

@@ -11,7 +11,7 @@ function InputField({
     children,
     required,
 }) {
-    const styling = `w-full p-2 rounded-md border-2 border-zinc-800 focus:outline-none 
+    const styling = `w-full p-2 rounded-md border-2 border-zinc-800 focus:outline-none bg-zinc-800/30
     focus:border-rose-900 transition-all duration-150 mb-6`
 
     return (

@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { createRSVP } = require('../controllers/rsvpController');
+const { createRSVP, initiateVerification } = require('../controllers/rsvpController');
+
+
+router.post('/:eventId/verify-email', initiateVerification);
 
 router.post('/:eventId', createRSVP);
 

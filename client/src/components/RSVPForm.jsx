@@ -5,7 +5,8 @@ import StatusMessage from './StatusMessage';
 import Spinner from './Spinner';
 import ContentCard from './ContentCard';
 import AuthCard from './AuthCard';
-import { rsvpToEvent } from '../api/rsvpservice';
+import { initiateVerification, createRSVP } from '../api/rsvpservice';
+import VerificationCode from './VerificationCode';
 
 const RSVPForm = ({ eventId, bookingSuccess }) => {
     const [name, setName] = useState('');
@@ -13,6 +14,8 @@ const RSVPForm = ({ eventId, bookingSuccess }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
+    const [showVerification, setShowVerification] = useState(false);
+    const [rsvpId, setRsvpId] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,20 +24,42 @@ const RSVPForm = ({ eventId, bookingSuccess }) => {
         setSuccess(false);
     
         try {
-            console.log('Submitting with eventId:', eventId);
-            const response = await rsvpToEvent(eventId, { name, email });
-            setName('');
-            setEmail('');
-            setSuccess('Sign up complete! Check your inbox for event details');
-            if (bookingSuccess) {
-                bookingSuccess(response);
-            }
+            await initiateVerification(eventId, { name, email });
+            setShowVerification(true);
+
         } catch (error) {
-            setError(error.message || 'Could not sign you up. Please check your email and try again.');
+            setError(error.response?.data?.error ||  'Something went wrong.');
         } finally {
             setLoading(false);
         }
     };
+
+    const handleVerification = async (code) => {
+        setLoading(true);
+        try {
+            const response = await createRSVP(eventId, { code });
+            if (response.data.success) {
+                setSuccess('Sign up complete! Check your inbox for event details');
+                setName('');
+                setEmail('');
+                setShowVerification(false);
+            if (bookingSuccess) {
+                bookingSuccess();
+            }
+            }
+        } catch (error) {
+            setError(error.response?.data?.error || 'Unable to verify code.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (showVerification) {
+        return <VerificationCode 
+            onVerify={handleVerification} 
+            error={error}
+        />;
+    }
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center">
@@ -42,12 +67,11 @@ const RSVPForm = ({ eventId, bookingSuccess }) => {
             onChange={(e) => setName(e.target.value)} required />
             <InputField type="email" name="Email" value={email} 
             onChange={(e) => setEmail(e.target.value)} required />
-            
-            <Button variant="nav" type="submit" disabled={loading} className="mb-6">
-                {loading ? <Spinner /> : 'Submit'}
+            <Button type="submit" disabled={loading}>
+                Submit
             </Button>
             {error && <StatusMessage alertType="error" alertMessage={error} />}
-            {success && <StatusMessage alertType="success" alertMessage={success} />}
+            {/*{success && <StatusMessage alertType="success" alertMessage={success} />} */}
         </form>
     );
     
