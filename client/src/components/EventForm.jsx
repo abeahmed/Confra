@@ -31,6 +31,17 @@ function EventForm({
         setEventData(prev => ({ ...prev, [id]: value }));
     };
 
+    const validateForm = () => {
+        return eventData.title && 
+               eventData.description && 
+               eventData.startTime && 
+               eventData.endTime && 
+               eventData.venue && 
+               eventData.address && 
+               eventData.capacity && 
+               eventData.category;
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(eventData);
@@ -63,9 +74,9 @@ function EventForm({
             
             <Button 
                 type="submit" 
-                disabled={loading}>
-                
-                {loading ? <Spinner /> : submitText}
+                disabled={!validateForm()}
+            >
+                {submitText}
             </Button>
         
 

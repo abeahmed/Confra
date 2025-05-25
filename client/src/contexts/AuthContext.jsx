@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import api from '../api/axios';
 
 const AuthContext = createContext();
@@ -14,6 +14,10 @@ export const AuthProvider = ({ children }) => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const clearError = useCallback(() => {
+        setError('');
+    }, []);
 
     useEffect(() => {
         if (token) {
@@ -94,6 +98,7 @@ export const AuthProvider = ({ children }) => {
                 token,
                 loading,
                 error,
+                clearError,
                 login,
                 register,
                 logout,

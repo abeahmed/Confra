@@ -117,7 +117,14 @@ function DashboardPage() {
                                                 navigate(`/event/${event.id}/edit`, { state: { event } });}} />
                                             <Button variant="icon" icon={LuCopy} onClick={(e) => {
                                             e.stopPropagation(); 
-                                            navigator.clipboard.writeText(eventUrl);}}/>
+                                            navigator.clipboard.writeText(eventUrl)
+                                            navigate(location.pathname, { 
+                                                state: { 
+                                                    successMessage: 'Event link copied to clipboard' 
+                                                },
+                                                replace: true
+                                            });
+                                        }}/>
                                         </div>
                                     </ContentCard>
                                 );

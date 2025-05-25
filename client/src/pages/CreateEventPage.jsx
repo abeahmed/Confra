@@ -16,38 +16,30 @@ function CreateEventPage() {
         try {
             const response = await createEvent(eventData);
             if (response.data.success) {
-                setCreatedEventId(response.data.data._id);
-            } else {
-                setError(response.data.error || 'Failed to create event');
+                const eventId = response.data.data._id;
+                const eventUrl = `${window.location.origin}/event/${eventId}`;
+
+                navigator.clipboard.writeText(eventUrl);
+                
+                navigate(`/event/${eventId}`, {
+                    state: { 
+                        successMessage: 'Event created successfully! Link copied to clipboard' 
+                    }
+                });
             }
-        
         } catch (err) {
-            console.error('Error creating event:', err);
-            setError(err.message || 'An error occurred while creating the event');
+            if (err.response?.status === 400) {
+                const errorMessage = err.response.data.errors?.[0]?.message || 
+                err.response.data.error || 'Please check event details';
+                setError(errorMessage);
+            } else {
+                setError('Something went wrong. Please try again.');
+            }
         } finally {
             setLoading(false);
         }
             
     };
-
-    if (createdEventId) {
-        const eventUrl = `${window.location.origin}/event/${createdEventId}`;
-        return (
-               <StatusMessage
-                alertType="success"
-                alertMessage="Event created successfully!"
-                description="Share this link with your attendees:"
-                >
-                    <div className="bg-zinc-950 p-4 rounded-lg mb-6 w-full max-w-md border border-zinc-800">
-                        <code className="text-gray-300 break-all">{eventUrl}</code>
-                    </div>
-                    <div className="flex gap-4">
-                        <Button onClick={() => navigator.clipboard.writeText(eventUrl)}>Copy link</Button>
-                        <Button onClick={() => navigate(`/event/${createdEventId}`)}>View Event</Button>
-                    </div>
-                </StatusMessage>
-        );
-    } 
 
     return (
             <EventForm

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-const Button = ({to, onClick, children, variant='default', className='', icon: Icon }) => {
+const Button = ({to, onClick, children, variant='default', className='', icon: Icon, disabled=false}) => {
 
-    const baseStyling = "hover:cursor-pointer rounded-full font-medium transition flex items-center justify-center";
+    const baseStyling = " rounded-full font-medium transition flex items-center justify-center";
 
 const variants = {
   default: "bg-rose-700 hover:bg-rose-500 px-6 py-3 md:px-10 md:py-4 text-gray-100 hover:-translate-y-0.5 shadow-md mb-6 text-base md:text-lg",
@@ -12,7 +12,9 @@ const variants = {
 
 };
 
-    const styling = `${baseStyling} ${variants[variant]} ${className}`
+    const styling = `${baseStyling} ${variants[variant]} ${className}
+    ${disabled ? 'opacity-30 cursor-not-allowed hover:scale-100 hover:bg-rose-700' : 
+    'hover:cursor-pointer'}`
 
     const isIconOnly = variant === "icon";
     const content = Icon ? (
@@ -33,9 +35,10 @@ const variants = {
     return (
         <button 
             onClick={onClick} 
-            className={styling}>
-            {content}
-            {children}
+            className={styling}
+            disabled={disabled}>
+                {content}
+                {children}
         </button>
     )
 }

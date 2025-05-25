@@ -8,7 +8,7 @@ import Alert from '../components/Alert';
 import Text from '../components/Text';
 
 function RegisterPage() {
-    const { register, error, loading, isAuthenticated } = useAuth();
+    const { register, error, loading, isAuthenticated, clearError } = useAuth();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -21,14 +21,23 @@ function RegisterPage() {
     });
 
     useEffect(() => {
+        clearError();
         if (isAuthenticated == true) {
             navigate('/dashboard', { replace: true });
         }
-    }, [isAuthenticated, navigate]);
+    }, [isAuthenticated, navigate, clearError]);
 
     const handleChange = (e) => {
         const { id, value } = e.target;
         setFormData({ ...formData, [id]: value });
+        clearError();
+    };
+
+    const validateForm = () => {
+        return formData.name && 
+               formData.email && 
+               formData.password && 
+               formData.confirmPassword;
     };
 
     const handleSubmit = async (e) => {
@@ -54,7 +63,7 @@ function RegisterPage() {
             <InputField name="Password" id="password" type="password" value={formData.password} onChange={handleChange} required/>
             <InputField name="Confirm Password" id="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} required/>
             <InputField name="Phone Number" id="phone" type="tel" value={formData.phone} onChange={handleChange} required/>
-            <Button type="submit" disabled={loading}>{loading ? 'Creating account...' : 'Register'}</Button>
+            <Button type="submit" disabled={!validateForm()}>Register</Button>
             
 
             {error && <Alert type="error">{error}</Alert>}

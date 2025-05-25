@@ -8,7 +8,7 @@ import Text from '../components/Text';
 import Alert from '../components/Alert';
 
 function LoginPage() {
-    const { login, error, loading, isAuthenticated } = useAuth();
+    const { login, error, loading, isAuthenticated, clearError } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -20,14 +20,20 @@ function LoginPage() {
     });
 
     useEffect(() => {
+        clearError();
         if (isAuthenticated == true) {
             navigate('/dashboard', { replace: true });
         }
-    }, [isAuthenticated, navigate]);
+    }, [isAuthenticated, navigate, clearError]);
 
     const handleChange = (e) => {
         const { id, value } = e.target;
         setFormData({ ...formData, [id]: value });
+        clearError();
+    };
+
+    const validateForm = () => {
+        return formData.email && formData.password;
     };
 
     const handleSubmit = async (e) => {
@@ -50,10 +56,10 @@ function LoginPage() {
         <AuthCard title="Login to your account" onSubmit={handleSubmit}>
             <InputField name="email" id="email" type="email" value={formData.email} onChange={handleChange} required/>
             <InputField name="password" id="password" type="password" value={formData.password} onChange={handleChange} required/>
-            <Button type="submit" disabled={loading}>{loading ? 'Logging in...' : 'Login'}</Button>
-            
+            <Button type="submit" disabled={!validateForm()}>Login</Button>
+          
             {error && <Alert type="error">{error}</Alert>}
-            
+
             <Text variant = "bodySmall">Don't have an account? <Link to="/register">Register</Link></Text>
         </AuthCard>
        
