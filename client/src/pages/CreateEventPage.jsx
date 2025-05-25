@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import Button from '../components/Button';
 import { createEvent } from '../api/eventservice';
-import PageContainer from '../components/PageContainer';
 import EventForm from '../components/EventForm';
 import StatusMessage from '../components/StatusMessage';
 
@@ -34,7 +33,6 @@ function CreateEventPage() {
     if (createdEventId) {
         const eventUrl = `${window.location.origin}/event/${createdEventId}`;
         return (
-            <PageContainer>
                <StatusMessage
                 alertType="success"
                 alertMessage="Event created successfully!"
@@ -48,12 +46,10 @@ function CreateEventPage() {
                         <Button onClick={() => navigate(`/event/${createdEventId}`)}>View Event</Button>
                     </div>
                 </StatusMessage>
-            </PageContainer>
         );
     } 
 
     return (
-        <PageContainer>
             <EventForm
                 onSubmit={handleSubmit}
                 loading={loading}
@@ -61,8 +57,6 @@ function CreateEventPage() {
                 submitText="Create"
                 title="Create New Event"
             />
-        </PageContainer>
-     
     );
 
 }

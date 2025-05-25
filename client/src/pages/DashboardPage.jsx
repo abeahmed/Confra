@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import Text from '../components/Text';
-import PageContainer from '../components/PageContainer';
 import Button from '../components/Button';
 import { LuCopy, LuSquarePen, LuPlus } from "react-icons/lu";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -53,25 +52,21 @@ function DashboardPage() {
 
     if (loading) {
         return (
-            <PageContainer>
-                <Loading message="Loading Dashboard" />
-            </PageContainer>
+            <Loading message="Loading Dashboard" />
         );
     }
 
     if (error) {
         return (
-            <PageContainer>
-                <StatusMessage alertType="error" alertMessage="Error fetching user data" 
-                description="Please try again later.">
-                    <Button onClick={() => navigate('/')}>Back to home</Button>
-                </StatusMessage>
-            </PageContainer>
+            <StatusMessage alertType="error" alertMessage="Error fetching user data" 
+            description="Please try again later.">
+                <Button onClick={() => navigate('/')}>Back to home</Button>
+            </StatusMessage>
         );
     }
 
     return (
-        <PageContainer>
+        <div>
             <div className="mb-16">
                 <Text variant="h1">Dashboard</Text>
                 <Text variant="bodyLarge" className="text-gray-400">
@@ -122,7 +117,7 @@ function DashboardPage() {
                                                 navigate(`/event/${event.id}/edit`, { state: { event } });}} />
                                             <Button variant="icon" icon={LuCopy} onClick={(e) => {
                                             e.stopPropagation(); 
-                                            navigator.clipboard.writeText(eventUrl)}}/>
+                                            navigator.clipboard.writeText(eventUrl);}}/>
                                         </div>
                                     </ContentCard>
                                 );
@@ -131,7 +126,7 @@ function DashboardPage() {
                     )}
                 </div>
             )}
-        </PageContainer>
+        </div>
     );
 }
 

@@ -6,7 +6,7 @@ import Text from '../components/Text';
 
 function LandingPage() {
     return (
-        <div className="flex flex-col items-center justift-start text-center p-8">
+        <div className="flex flex-col items-center text-center">
             <div className="max-w-xl">
             <Text variant = "h1" className="font-bold text-4xl md:text-5xl">Confra</Text>
             <Text variant = "bodyLarge" className="text-xl md:text-2xl text-gray-400">Create and manage events with ease</Text>

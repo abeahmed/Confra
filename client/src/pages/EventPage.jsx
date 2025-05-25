@@ -5,12 +5,10 @@ import { useAuth } from '../contexts/AuthContext';
 import { LuTrash2, LuSquarePen } from "react-icons/lu";
 import Text from '../components/Text';
 import Button from '../components/Button';
-import PageContainer from '../components/PageContainer';
 import StatusMessage from '../components/StatusMessage';
 import Loading from '../components/Loading';
 import RSVPForm from '../components/RSVPForm';
 import ContentCard from '../components/ContentCard';
-import Alert from '../components/Alert';
 
 function EventPage() {
     const { id } = useParams();
@@ -21,6 +19,7 @@ function EventPage() {
     const [isOrganizer, setIsOrganizer] = useState(false);
     const [showRSVP, setShowRSVP] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+
 
     const navigate = useNavigate();
 
@@ -49,9 +48,14 @@ function EventPage() {
     const handleDelete = async () => {
         try {
             await deleteEvent(id);
-            navigate('/dashboard');
+            navigate('/dashboard', {
+                state: { 
+                    successMessage: 'Event deleted successfully' 
+                }
+            });
+            
         } catch (error) {
-            setError(error.message || 'An error occurred while deleting the event');
+            setError(error.message || 'Failed to delete event');
         }
     }
     
@@ -91,26 +95,24 @@ function EventPage() {
     
     if (loading) {
         return (
-            <PageContainer>
-                <Loading message="Loading" />
-            </PageContainer>
+            <Loading message="Loading" />
         )
     }
 
 
     if (!event || error) {
         return (
-            <PageContainer>
-                <StatusMessage alertType="error" alertMessage="Event not found" 
-                description="Please check the URL or try again later.">
-                    <Button onClick={() => navigate('/')}>Back to home</Button>
-                </StatusMessage>
-            </PageContainer>
+
+            <StatusMessage alertType="error" alertMessage="Event not found" 
+            description="Please check the URL or try again later.">
+                <Button onClick={() => navigate('/')}>Back to home</Button>
+            </StatusMessage>
+
         );
     }
 
     return (
-        <PageContainer>
+        <div>
             <Text variant="h1">{event.title}</Text>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div>
@@ -139,7 +141,7 @@ function EventPage() {
             <Text variant="body">{event.description}</Text>
         </div>
         {renderActions()}
-    </PageContainer>
+    </div>
     );
 }
 
