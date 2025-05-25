@@ -94,6 +94,8 @@ exports.getEvent = async (req, res) => {
       select: 'name email'
     });
 
+    event.attendeeCount = await event.totalAttendees;
+
     if (!event) {
       return res.status(404).json({
         success: false,

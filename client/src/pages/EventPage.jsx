@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getEvent, deleteEvent} from '../api/eventservice';
 import { useAuth } from '../contexts/AuthContext';
-import { LuTrash2, LuSquarePen } from "react-icons/lu";
+import { LuTrash2, LuSquarePen, LuCopy } from "react-icons/lu";
 import Text from '../components/Text';
 import Button from '../components/Button';
 import StatusMessage from '../components/StatusMessage';
 import Loading from '../components/Loading';
 import RSVPForm from '../components/RSVPForm';
 import ContentCard from '../components/ContentCard';
+import Alert from '../components/Alert';
 
 function EventPage() {
     const { id } = useParams();
@@ -20,8 +21,9 @@ function EventPage() {
     const [showRSVP, setShowRSVP] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
-
     const navigate = useNavigate();
+
+    const state = useLocation();
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -58,18 +60,49 @@ function EventPage() {
             setError(error.message || 'Failed to delete event');
         }
     }
+
+    const renderAttendeeStats = () => {
+        if (!isOrganizer) return null;
+
+        return (
+            <div className="bg-zinc-950 rounded-lg p-6 mb-8">
+                <div className="flex justify-between items-center">
+                    <div>
+                        <Text variant="h3" className="mb-2">Attendees</Text>
+                        <Text variant="bodyLarge" className="text-rose-500">
+                            {event.attendeeCount} / {event.capacity}
+                        </Text>
+                    </div>
+                    <div className="text-gray-400">
+                        <Text variant="body">
+                            {((event.attendeeCount / event.capacity) * 100).toFixed(0)}% capacity
+                        </Text>
+                    </div>
+                </div>
+            </div>
+        );
+    };
     
 
     const renderActions = () => {
         if (isOrganizer) {
             return (
-                <div className="flex flex-col">
-                     <StatusMessage alertType="info" alertMessage={window.location.href} className="w-full"></StatusMessage>
-               
+                <div className="flex flex-col"> 
                     <div className="flex text-center justify-center items-center gap-4 flex-wrap">
+                        <Button variant="secondary" icon={LuCopy} onClick={() => {
+                                navigator.clipboard.writeText(window.location.href);
+                                navigate(location.pathname, { 
+                                    state: { 
+                                        successMessage: 'Event link copied to clipboard' 
+                                    },
+                                    replace: true
+                                });
+                            }}
+                        > Copy Link </Button>
                         <Button variant="secondary" icon={LuSquarePen} 
                         onClick={() => navigate(`/event/${event.id}/edit`, { state: { event } })} >Edit</Button>
-                        <Button variant="secondary" icon={LuTrash2} onClick={handleDelete}>Delete</Button>    
+                        <Button variant="secondary" icon={LuTrash2} onClick={handleDelete}>Delete</Button> 
+                        
                     </div>
 
                 </div>
@@ -136,10 +169,11 @@ function EventPage() {
                 
             </div> 
             
-        <div className="bg-zinc-950 rounded-lg p-6 mb-8">
+        <div className="bg-zinc-800/30 rounded-lg p-6 mb-8">
             <Text variant="h3">Description</Text>
             <Text variant="body">{event.description}</Text>
         </div>
+        {renderAttendeeStats()}
         {renderActions()}
     </div>
     );

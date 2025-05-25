@@ -64,6 +64,10 @@ const EventSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  attendeeCount: {
+    type: Number,
+    default: 0
+  },
   organizer: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
@@ -84,6 +88,14 @@ EventSchema.virtual('availableTickets').get(async function() {
     total + booking.numberOfTickets, 0);
   
   return this.capacity - bookedTickets;
+});
+
+EventSchema.virtual('totalAttendees').get(async function() {
+  const rsvps = await this.model('RSVP')
+      .find({ event: this._id })
+      .countDocuments();
+  
+  return rsvps || 0;
 });
 
 // Create index to enable efficient searching
