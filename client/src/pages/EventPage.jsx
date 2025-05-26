@@ -128,7 +128,7 @@ function EventPage() {
     
     if (loading) {
         return (
-            <Loading message="Loading" />
+            <Loading message="Loading Event" />
         )
     }
 

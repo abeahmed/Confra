@@ -85,7 +85,6 @@ const VerificationCode = ( {onVerify, error: externalError }) => {
         setLoading(true);
         setError('');
         try {
-            console.log('Sending code:', code.join(''));
             onVerify(code.join(''));
         } catch (error) {
             setError(error.response?.data?.error || error.message || 

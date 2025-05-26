@@ -19,17 +19,9 @@ function DashboardPage() {
     const state = useLocation();
 
     useEffect(() => {
-        console.log('Auth State:', { 
-            user, 
-            isAuthenticated,
-            userId: user?.id,
-            userRole: user?.role,
-            fullUser: user 
-        });
         const fetchUserData = async () => {
             try {
                 if (!user?.id) {
-                    console.log('User ID not available yet');
                     setLoading(false);
                     return;
                 }
@@ -52,7 +44,7 @@ function DashboardPage() {
 
     if (loading) {
         return (
-            <Loading />
+            <Loading message="Loading Dashboard" />
         );
     }
 

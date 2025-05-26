@@ -24,7 +24,11 @@ function EventForm({
     submitText = 'Create Event',
     title = 'Create New Event'
 }) {
-    const [eventData, setEventData] = useState(initialData);
+    const [eventData, setEventData] = useState({
+        ...initialData,
+        startTime: initialData.startTime ? new Date(initialData.startTime).toISOString().slice(0, 16) : '',
+        endTime: initialData.endTime ? new Date(initialData.endTime).toISOString().slice(0, 16) : ''
+    });
 
     const handleChange = (e) => {
         const{id, value} = e.target;

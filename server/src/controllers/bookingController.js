@@ -34,7 +34,7 @@ exports.getBookings = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 };
@@ -75,7 +75,7 @@ exports.getBooking = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 };
@@ -121,7 +121,7 @@ exports.createBooking = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 };
@@ -179,7 +179,7 @@ exports.updateBookingStatus = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 };
@@ -221,7 +221,7 @@ exports.getEventBookings = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 };
@@ -247,7 +247,7 @@ exports.getUserBookings = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 }; 

@@ -77,7 +77,7 @@ exports.getEvents = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 };
@@ -119,7 +119,7 @@ exports.getEvent = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 };
@@ -143,7 +143,7 @@ exports.createEvent = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 };
@@ -183,7 +183,7 @@ exports.updateEvent = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 };
@@ -220,7 +220,7 @@ exports.deleteEvent = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 };
@@ -259,7 +259,7 @@ exports.togglePublishStatus = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 };
@@ -287,7 +287,7 @@ exports.getEventsByCategory = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 };
@@ -322,7 +322,7 @@ exports.searchEvents = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 };
@@ -353,7 +353,7 @@ exports.getUpcomingEvents = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: err.message
+      error: 'Something went wrong.'
     });
   }
 }; 
