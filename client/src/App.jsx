@@ -19,6 +19,7 @@ function AppContent() {
   const location = useLocation();
 
   useEffect(() => {
+    console.log('Location state:', location.state);
     if (location.state?.successMessage) {
       setToastMessage(location.state.successMessage);
       setShowToast(true);

@@ -96,7 +96,7 @@ const VerificationCode = ( {onVerify, error: externalError }) => {
     };
 
     return (
-            <div className="flex flex-col items-center">
+            <div className="flex flex-wrap justify-center gap-2">
                 <Text variant="body">
                     Enter the 6-digit code sent to your email
                 </Text>
@@ -116,7 +116,7 @@ const VerificationCode = ( {onVerify, error: externalError }) => {
                                 ref={(el) => (inputRefs.current[index] = el)}
                                 className="w-12 h-12 text-center text-xl font-semibold rounded-md 
                                 border-2 border-zinc-800 focus:outline-none focus:border-rose-900 
-                                transition-all duration-150 bg-zinc-800/30 text-gray-100 mx-2 mb-6"
+                                transition-all duration-150 bg-zinc-800/30 text-gray-100 mx-1 mb-6"
                                 inputMode="numeric"
                                 pattern="[0-9]"
                             />

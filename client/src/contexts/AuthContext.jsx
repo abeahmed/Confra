@@ -91,6 +91,67 @@ export const AuthProvider = ({ children }) => {
         sessionStorage.removeItem('auth_user'); 
     };
 
+    const forgotPassword = async (email) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await api.post('users/forgot-password', { email });
+            const data = response.data;
+
+            if (!data.success) {
+                throw new Error(data.error || 'Failed to send verification code');
+            }
+
+            return true;
+        } catch (err) {
+            setError(err.response?.data?.error || err.message);
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const verifyCode = async (code) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await api.post('users/verify-code', { code });
+            const data = response.data;
+
+            if (!data.success) {
+                throw new Error(data.error || 'Invalid verification code');
+            }
+
+            return true;
+        } catch (err) {
+            setError(err.response?.data?.error || err.message);
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const resetPassword = async (newPassword) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await api.post('users/reset-password', { newPassword });
+            const data = response.data;
+
+            if (!data.success) {
+                throw new Error(data.error || 'Failed to reset password');
+            }
+
+            return true;
+        } catch (err) {
+            setError(err.response?.data?.error || err.message);
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
     return (
         <AuthContext.Provider
             value={{
@@ -102,6 +163,9 @@ export const AuthProvider = ({ children }) => {
                 login,
                 register,
                 logout,
+                forgotPassword,
+                verifyCode,
+                resetPassword,
                 isAuthenticated: !!token,
             }}
         >

@@ -113,7 +113,7 @@ function EventPage() {
                     {showSuccess ? (
                         <StatusMessage alertType="success" alertMessage="Sign up complete! Check your inbox for event details" />
                     ) : showRSVP ? (
-                        <ContentCard maxWidth="max-w-lg">
+                        <ContentCard maxWidth="max-w-md">
                             <RSVPForm eventId={id} bookingSuccess={handleBookingSuccess} />
                         </ContentCard>
                     ) : (
