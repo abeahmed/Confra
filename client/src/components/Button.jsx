@@ -1,19 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-const Button = ({to, onClick, children, variant='default', className='', icon: Icon, disabled=false}) => {
+import Spinner from './Spinner';
+
+const Button = ({to, onClick, children, variant='default', className='', 
+icon: Icon, disabled=false, loading=false}) => {
 
     const baseStyling = " rounded-full font-medium transition flex items-center justify-center";
 
-const variants = {
-  default: "bg-rose-700 hover:bg-rose-500 px-6 py-3 md:px-10 md:py-4 text-gray-100 hover:-translate-y-0.5 shadow-md mb-6 text-base md:text-lg",
-  nav: "bg-transparent border-2 border-rose-700 text-rose-700 hover:bg-rose-700 hover:border-rose-700 hover:text-zinc-900 px-4 py-2 md:px-6 md:py-2 text-md md:text-lg",
-  secondary: "bg-transparent border-2 border-rose-700 text-rose-700 hover:bg-rose-700 hover:border-rose-700 hover:text-zinc-900 px-4 py-2 md:px-6 md:py-3 min-w-[8rem] max-w-full text-center text-md md:text-lg hover:scale-105 transition-transform duration-300",
-  icon: "bg-transparent border-2 border-rose-700 text-rose-700 hover:bg-rose-700 hover:border-rose-700 hover:text-zinc-900 w-12 h-12 md:w-14 md:h-14 hover:scale-105 transition-transform duration-300"  
+    const variants = {
+    default: "bg-rose-700 hover:bg-rose-500 px-6 py-3 md:px-10 md:py-4 text-gray-100 hover:-translate-y-0.5 shadow-md mb-6 text-base md:text-lg",
+    nav: "bg-transparent border-2 border-rose-700 text-rose-700 hover:bg-rose-700 hover:border-rose-700 hover:text-zinc-900 px-4 py-2 md:px-6 md:py-2 text-md md:text-lg",
+    secondary: "bg-transparent border-2 border-rose-700 text-rose-700 hover:bg-rose-700 hover:border-rose-700 hover:text-zinc-900 px-4 py-2 md:px-6 md:py-3 min-w-[8rem] max-w-full text-center text-md md:text-lg hover:scale-105 transition-transform duration-300",
+    icon: "bg-transparent border-2 border-rose-700 text-rose-700 hover:bg-rose-700 hover:border-rose-700 hover:text-zinc-900 w-12 h-12 md:w-14 md:h-14 hover:scale-105 transition-transform duration-300"  
 
-};
+    };
 
     const styling = `${baseStyling} ${variants[variant]} ${className}
-    ${disabled ? 'opacity-30 cursor-not-allowed hover:scale-100 hover:bg-rose-700' : 
+    ${(disabled || loading) ? 'opacity-30 cursor-not-allowed hover:scale-100 hover:bg-rose-700' : 
     'hover:cursor-pointer'}`
 
     const isIconOnly = variant === "icon";
@@ -24,10 +27,11 @@ const variants = {
     if(to) {
         return (
             <Link 
-                to={to} 
-                className={styling}>
-                {content}
-                {children}
+            to={to} 
+            className={styling}>
+                {loading && <Spinner />}
+                {!loading && content}
+                {!loading && children}
             </Link>
         )
     }
@@ -36,9 +40,10 @@ const variants = {
         <button 
             onClick={onClick} 
             className={styling}
-            disabled={disabled}>
-                {content}
-                {children}
+            disabled={disabled || loading}>
+                {loading && <Spinner />}
+                {!loading && content}
+                {!loading && children}
         </button>
     )
 }

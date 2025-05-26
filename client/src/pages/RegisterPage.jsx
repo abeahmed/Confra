@@ -6,6 +6,7 @@ import Button from '../components/Button';
 import AuthCard from '../components/AuthCard';
 import Alert from '../components/Alert';
 import Text from '../components/Text';
+import LinkButton from '../components/LinkButton';
 
 function RegisterPage() {
     const { register, error, loading, isAuthenticated, clearError } = useAuth();
@@ -63,12 +64,12 @@ function RegisterPage() {
             <InputField name="Password" id="password" type="password" value={formData.password} onChange={handleChange} required/>
             <InputField name="Confirm Password" id="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} required/>
             <InputField name="Phone Number" id="phone" type="tel" value={formData.phone} onChange={handleChange} required/>
-            <Button type="submit" disabled={!validateForm()}>Register</Button>
+            <Button type="submit" disabled={!validateForm()} loading={loading}>Register</Button>
             
 
             {error && <Alert type="error">{error}</Alert>}
 
-            <Text variant = "bodySmall">Already have an account? <Link to="/login">Login</Link></Text>
+            <Text variant = "bodySmall">Already have an account? <LinkButton to="/login">Login</LinkButton></Text>
 
         </AuthCard>
     );

@@ -52,7 +52,7 @@ function DashboardPage() {
 
     if (loading) {
         return (
-            <Loading message="Loading Dashboard" />
+            <Loading />
         );
     }
 

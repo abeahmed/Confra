@@ -75,6 +75,7 @@ function EventForm({
             <Button 
                 type="submit" 
                 disabled={!validateForm()}
+                loading={loading}
             >
                 {submitText}
             </Button>

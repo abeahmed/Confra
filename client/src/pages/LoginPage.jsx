@@ -48,6 +48,14 @@ function LoginPage() {
         return formData.email && formData.password;
     };
 
+    const handleBack = () => {
+        setIsForgotPassword(!isForgotPassword);
+        setIsEmailSubmitted(false);
+        setIsVerified(false);
+        setNewPassword('');
+        setConfirmPassword('');
+    }
+
 
     const handleVerification = async (code) => {
         const success = await verifyCode(code);
@@ -134,6 +142,7 @@ function LoginPage() {
                         <Button 
                             type="submit" 
                             disabled={!newPassword || !confirmPassword}
+                            loading={loading}
                         >
                         Reset
                         </Button>
@@ -143,14 +152,14 @@ function LoginPage() {
             ) : null}
 
             {!isEmailSubmitted && (
-                <Button type="submit" disabled={!validateForm()}>
+                <Button type="submit" disabled={!validateForm()} loading={loading}>
                     {isForgotPassword ? "Submit" : "Login"}
                 </Button>
             )}
 
             {error && <Alert type="error">{error}</Alert>}
             
-            <LinkButton onClick={() => setIsForgotPassword(!isForgotPassword)}>
+            <LinkButton onClick={handleBack}>
                 {isForgotPassword ? "Back to Login" : "Forgot Password?"}
             </LinkButton>
             <Text variant = "bodySmall">

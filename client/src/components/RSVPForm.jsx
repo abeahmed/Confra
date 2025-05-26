@@ -67,7 +67,7 @@ const RSVPForm = ({ eventId, bookingSuccess }) => {
             onChange={(e) => setName(e.target.value)} required />
             <InputField type="email" name="Email" value={email} 
             onChange={(e) => setEmail(e.target.value)} required />
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" loading={loading}>
                 Submit
             </Button>
             {error && <StatusMessage alertType="error" alertMessage={error} />}
