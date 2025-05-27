@@ -18,6 +18,10 @@ services:
     env_file:
       - ./server/.env.production
 
+networks:
+  app-network:
+    driver: bridge
+
 
 
     
