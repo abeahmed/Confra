@@ -1,20 +1,22 @@
 version: '3'
 services:
   frontend:
-    build: ./client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
     ports: 
-      - "5173:4173"
+      - "80:80"
     depends_on:
       - backend
     env_file:
-      - ./client/.env
+      - ./client/.env.production
 
   backend:
-    build: ./server
-    ports:
-      - "5001:3000"
+    build: 
+      context: ./server
+      dockerfile: Dockerfile.prod
     env_file:
-      - ./server/.env
+      - ./server/.env.production
 
 
 
