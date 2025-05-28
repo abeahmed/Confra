@@ -101,7 +101,7 @@ const VerificationCode = ( {onVerify, error: externalError }) => {
                 </Text>
 
                 <form>
-                    <div>
+                    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-6">
                         {code.map((digit, index) => (
                             <input 
                                 key={index}
@@ -113,9 +113,9 @@ const VerificationCode = ( {onVerify, error: externalError }) => {
                                 onFocus={handleFocus}
                                 onPaste={handlePaste}
                                 ref={(el) => (inputRefs.current[index] = el)}
-                                className="w-12 h-12 text-center text-xl font-semibold rounded-md 
+                                className="w-12 h-12 sm:w-12 text-center text-xl font-semibold rounded-md 
                                 border-2 border-zinc-800 focus:outline-none focus:border-rose-900 
-                                transition-all duration-150 bg-zinc-800/30 text-gray-100 mx-1 mb-6"
+                                transition-all duration-150 bg-zinc-800/30 text-gray-100"
                                 inputMode="numeric"
                                 pattern="[0-9]"
                             />

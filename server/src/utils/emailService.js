@@ -1,12 +1,34 @@
+const { google } = require('googleapis');
 const nodemailer = require('nodemailer');
 
-const transporter = nodemailer.createTransport({
-    service: process.env.EMAIL_SERVICE,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
-    }
+const oAuth2Client = new google.auth.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.GOOGLE_REDIRECT_URI,
+);
+
+console.log('Refresh Token:', process.env.GOOGLE_REFRESH_TOKEN);
+
+oAuth2Client.setCredentials({
+    refresh_token: process.env.GOOGLE_REFRESH_TOKEN
 });
+
+
+async function createTransporter() {
+    const accessToken = await oAuth2Client.getAccessToken();
+
+    return nodemailer.createTransport({
+        service: process.env.EMAIL_SERVICE,
+        auth: {
+            type: 'OAuth2',
+            user: process.env.EMAIL_USER, 
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+            accessToken: accessToken.token || accessToken, 
+          }
+    });
+}
 
 const sendVerificationCode = async (email, name, code) => {
 
@@ -23,7 +45,7 @@ const sendVerificationCode = async (email, name, code) => {
         <p>If you did not request this verification, please ignore this email.</p>
         `
     };
-
+    const transporter = await createTransporter();
     await transporter.sendMail(mailOptions);
 }
 
@@ -48,7 +70,7 @@ const sendConfirmation = async ({email, event, qrCodeDataUrl}) => {
             <p>We look forward to seeing you there!</p>
         `
     };
-
+    const transporter = await createTransporter();
     await transporter.sendMail(mailOptions);
 }
 
@@ -59,7 +81,7 @@ const sendEmail = async ({ to, subject, html }) => {
         subject,
         html
     };
-
+    const transporter = await createTransporter();
     await transporter.sendMail(mailOptions);
 }
 
