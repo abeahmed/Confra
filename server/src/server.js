@@ -6,10 +6,15 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const path = require('path');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 dotenv.config();
 
 const app = express();
+
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
 
 app.use(cors({
   origin: process.env.CORS_ORIGIN,
@@ -20,6 +25,11 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    ttl: 24 * 60 * 60 ,
+    autoRemove: 'native'
+  }),
   cookie: { secure: 
     process.env.NODE_ENV === 'production',
     httpOnly: true,
